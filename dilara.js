@@ -7,19 +7,22 @@ var sys = require("./lib/system");
 //Constants
 var cp = require("child_process");
 var pp = new powerprompt_1.PowerPrompt();
+//Processes
+var p_cli = cp.fork('./lib/cli');
+//Listeners
+p_cli.on("message", function (msg) {
+    pp.print("Answer from child: " + msg);
+});
 //Start
 run();
 //Methods
+function closeProcesses() {
+    p_cli.kill();
+}
 function run() {
     pp.printLine();
     pp.printTitle(sys.capitalize(pkg.name) + " " + pkg.version);
     pp.printLine();
-    startProcesses();
-}
-function startProcesses() {
-    var child = cp.fork('./src/child');
-    child.on("message", function (msg) {
-        pp.print("Answer from child: " + msg);
-    });
+    p_cli.send("Hallo");
 }
 //# sourceMappingURL=dilara.js.map
