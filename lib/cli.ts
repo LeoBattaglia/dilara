@@ -2,17 +2,13 @@
 import {PowerPrompt}        from "powerprompt";
 
 //Listeners
-process.on("message", (msg) => {
+process.on("message", check)
 
-    //do some intense work here
-    console.log("FFF: " + msg);
-
-    if(msg === "Hallo") {
-        console.log("AAA")
-        process.send("YES");
+//Methods
+function check(cmd){
+    if(cmd === "check") {
+        process.send(cmd + ":" + 200);
     }else{
-        console.log("BBB")
-        process.send("what?");
+        process.send(cmd + ":" + 404);
     }
-
-})
+}
