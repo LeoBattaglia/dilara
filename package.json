@@ -20,7 +20,11 @@
         "typescript":"^4.0.5"
     },
     "timeout": 1000,
-    "cli_cmd": {
+    "cmd": [{
+        "name": "exit",
+        "description": "Close Application"
+    }],
+    "cmd_cli": {
         "start": "start"
     }
 }

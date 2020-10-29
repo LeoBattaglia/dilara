@@ -13,7 +13,9 @@ p_cli.on("message", executeCLI);
 run();
 //Methods
 function close() {
+    pp.print("Close Application");
     closeAllProcesses();
+    pp.printLine();
     process.exit(0);
 }
 function closeAllProcesses() {
@@ -23,9 +25,14 @@ function closeCLI() {
     p_cli.kill();
 }
 function executeCLI(cmd) {
-    pp.print("Execute CLI-Command: " + cmd);
+    //pp.print("Execute CLI-Command: " + cmd);
+    switch (cmd) {
+        case config.cmd[0].name: //Exit
+            close();
+            break;
+    }
 }
 function run() {
-    p_cli.send(config.cli_cmd.start);
+    p_cli.send(config.cmd_cli.start);
 }
 //# sourceMappingURL=dilara.js.map

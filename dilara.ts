@@ -15,7 +15,9 @@ run();
 
 //Methods
 function close():void{
+    pp.print("Close Application");
     closeAllProcesses();
+    pp.printLine();
     process.exit(0);
 }
 
@@ -28,9 +30,14 @@ function closeCLI():void{
 }
 
 function executeCLI(cmd:string):void{
-    pp.print("Execute CLI-Command: " + cmd);
+    //pp.print("Execute CLI-Command: " + cmd);
+    switch(cmd){
+        case config.cmd[0].name: //Exit
+            close();
+            break;
+    }
 }
 
 function run():void{
-    p_cli.send(config.cli_cmd.start);
+    p_cli.send(config.cmd_cli.start);
 }

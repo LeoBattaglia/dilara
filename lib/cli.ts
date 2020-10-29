@@ -13,30 +13,43 @@ let started:Boolean         = false;
 process.on("message", execute);
 
 //Methods
-function execute(cmd):void{
-    pp.print("CLI-Execute: " + cmd);
-    pp.printLine();
+function execute(cmd):Boolean{
+    let close:Boolean = false;
     switch(cmd){
-        case config.cli_cmd.start:
+        case config.cmd[0].name: //Exit
+            process.send(config.cmd[0].name);
+            close = true;
+        case config.cmd_cli.start:
             if(!started){
                 run();
                 started = true;
             }
             break;
+        default:
+            pp.printError("Unknown Command: " + cmd);
     }
+    return close;
 }
 
 async function input(){
-    //let input = await pp.input("Input >>");
-    execute(await pp.input("Input >>"));
-    input().then();
+    pp.printLine();
+    let close: Boolean = execute(await pp.input("Input >>"));
+    if(!close){
+        input().then();
+    }
 }
 
 function printHelp(){
-
-
-
-    pp.printLine();
+    let str:string = "Command:";
+    str = sys.fillString(str, 16, " ");
+    str += "Description:"
+    pp.printInput(str);
+    for(let c of config.cmd){
+        str = c.name;
+        str = sys.fillString(str, 16, " ");
+        str += c.description;
+        pp.print(str);
+    }
 }
 
 function run():void{
