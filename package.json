@@ -2,9 +2,9 @@
   "name": "dilara",
   "version": "0.0.1",
   "description": "NOT USABLE: Simple and lightweight TypeScript-Framework to host a lot of small- or medium-sized web-projects.",
-  "main": "index.js",
+  "main":"dilara.js",
   "scripts": {},
-  "keywords": ["typescript", "node.js", "framework", "host", "mysql"],
+  "keywords": ["typescript", "javascript", "node.js", "framework", "host", "mysql"],
   "author": "Leo Battaglia",
   "license": "ISC",
   "dependencies": {
