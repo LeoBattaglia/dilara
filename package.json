@@ -19,5 +19,8 @@
         "powerprompt":"^1.1.3",
         "typescript":"^4.0.5"
     },
-    "timeout": 1000
+    "timeout": 1000,
+    "cli_cmd": {
+        "start": "start"
+    }
 }

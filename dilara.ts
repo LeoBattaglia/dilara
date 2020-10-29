@@ -1,18 +1,14 @@
 //Imports
-import * as is                      from "./lib/intersection";
-import * as pkg                     from "./package.json";
+import * as config                  from "./package.json";
 import {PowerPrompt}                from "powerprompt";
-import * as sys                     from "./lib/system";
 
 //Constants
 const cp                            = require("child_process");
 const pp                            = new PowerPrompt();
 
 //CLI
-let p_cli = cp.fork('./lib/cli');
-p_cli.on("message", (msg) => {
-    pp.print("Message from CLI: " + msg);
-});
+const p_cli = cp.fork('./lib/cli');
+p_cli.on("message", executeCLI);
 
 //Start
 run();
@@ -31,8 +27,10 @@ function closeCLI():void{
     p_cli.kill();
 }
 
+function executeCLI(cmd:string):void{
+    pp.print("Execute CLI-Command: " + cmd);
+}
+
 function run():void{
-    pp.printLine();
-    pp.printTitle(sys.capitalize(pkg.name) + " " + pkg.version);
-    pp.printLine();
+    p_cli.send(config.cli_cmd.start);
 }
