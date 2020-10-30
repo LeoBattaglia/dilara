@@ -4,11 +4,12 @@ Simple and lightweight TypeScript-Framework to host a lot of small- or medium-si
 **NOT USABLE AT THE MOMENT --> PLEASE VISIT US LATER AGAIN**
 
 ## Specifications
+- Dynamic Webserver
 - CLI-Admin-Tool
 - Multithreaded
-- Automated Thread-Administration
-- Multiple Web-Project-Hosting
+- Host multiple Web-Projects
 - Easy Database-Integration (MySQL)
 - Serverside rendered Webpages
 - Automated Page-Updates
-- 2way-bound Content
+- Dynamic Content
+- Page-Routing

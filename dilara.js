@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //Imports
 var config = require("./package.json");
 var powerprompt_1 = require("powerprompt");
+var sys = require("./lib/system");
 //Constants
 var cp = require("child_process");
 var pp = new powerprompt_1.PowerPrompt();
@@ -25,14 +26,17 @@ function closeCLI() {
     p_cli.kill();
 }
 function executeCLI(cmd) {
-    //pp.print("Execute CLI-Command: " + cmd);
     switch (cmd) {
-        case config.cmd[0].name: //Exit
+        case config.cmd.exit:
             close();
             break;
     }
 }
+function init() {
+    sys.createFolder("./projects");
+}
 function run() {
+    init();
     p_cli.send(config.cmd_cli.start);
 }
 //# sourceMappingURL=dilara.js.map

@@ -16,9 +16,10 @@ process.on("message", execute);
 function execute(cmd):Boolean{
     let close:Boolean = false;
     switch(cmd){
-        case config.cmd[0].name: //Exit
-            process.send(config.cmd[0].name);
+        case config.cmd.exit:
+            process.send(config.cmd.exit);
             close = true;
+            break;
         case config.cmd_cli.start:
             if(!started){
                 run();
@@ -39,12 +40,12 @@ async function input(){
     }
 }
 
-function printHelp(){
+function printHelp():void{
     let str:string = "Command:";
     str = sys.fillString(str, 16, " ");
     str += "Description:"
     pp.printInput(str);
-    for(let c of config.cmd){
+    for(let c of config.cmds){
         str = c.name;
         str = sys.fillString(str, 16, " ");
         str += c.description;

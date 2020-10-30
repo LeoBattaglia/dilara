@@ -9,8 +9,9 @@
         "javascript",
         "node.js",
         "framework",
-        "host",
-        "mysql"
+        "hosting",
+        "mysql",
+        "webserver"
     ],
     "author":"Leo Battaglia",
     "license":"ISC",
@@ -20,10 +21,15 @@
         "typescript":"^4.0.5"
     },
     "timeout": 1000,
-    "cmd": [{
+    "cmd": {
+        "exit": "exit"
+    },
+    "cmds": [
+        {
         "name": "exit",
         "description": "Close Application"
-    }],
+        }
+    ],
     "cmd_cli": {
         "start": "start"
     }

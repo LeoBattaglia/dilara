@@ -1,6 +1,7 @@
 //Imports
-import * as config                  from "./package.json";
-import {PowerPrompt}                from "powerprompt";
+import * as config          from "./package.json";
+import {PowerPrompt}        from "powerprompt";
+import * as sys             from "./lib/system";
 
 //Constants
 const cp                            = require("child_process");
@@ -30,14 +31,18 @@ function closeCLI():void{
 }
 
 function executeCLI(cmd:string):void{
-    //pp.print("Execute CLI-Command: " + cmd);
     switch(cmd){
-        case config.cmd[0].name: //Exit
+        case config.cmd.exit:
             close();
             break;
     }
 }
 
+function init():void{
+    sys.createFolder("./projects")
+}
+
 function run():void{
+    init();
     p_cli.send(config.cmd_cli.start);
 }
