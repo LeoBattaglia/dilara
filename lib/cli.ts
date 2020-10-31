@@ -13,18 +13,9 @@ let started:Boolean         = false;
 process.on("message", execute);
 
 //Methods
-function createCertificate(){
-
-    //TODO: Create new SSL-Certificate
-
-}
-
 function execute(cmd):Boolean{
     let close:Boolean = false;
     switch(cmd){
-        case config.cmd.cert:
-            createCertificate();
-            break;
         case config.cmd.exit:
             process.send(config.cmd.exit);
             close = true;
@@ -65,6 +56,12 @@ function printHelp():void{
 function run():void{
     pp.printLine();
     pp.printTitle(sys.capitalize(config.name) + " " + config.version);
+    pp.printLine();
+    if(config.http){
+        pp.print("Browser-Link: http://localhost:80")
+    }else{
+        pp.print("Browser-Link: https://localhost:8080")
+    }
     pp.printLine();
     printHelp();
     input().then();

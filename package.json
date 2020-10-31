@@ -26,14 +26,9 @@
     "host": "localhost",
     "timeout": 1000,
     "cmd": {
-        "cert": "cert",
         "exit": "exit"
     },
     "cmds": [
-        {
-            "name": "cert",
-            "description": "Create new SSL-Certification"
-        },
         {
             "name": "exit",
             "description": "Close Application"

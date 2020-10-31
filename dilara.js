@@ -13,7 +13,7 @@ var pp = new powerprompt_1.PowerPrompt();
 //CLI
 var p_cli = cp.fork('./lib/cli');
 p_cli.on("message", executeCLI);
-//HTTPS-Server
+//HTTP-/HTTPS-Server
 var https_options = {
     key: fs.readFileSync("./lib/cert/key.pem"),
     cert: fs.readFileSync("./lib/cert/cert.pem")
