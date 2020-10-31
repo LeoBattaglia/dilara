@@ -13,9 +13,18 @@ let started:Boolean         = false;
 process.on("message", execute);
 
 //Methods
+function createCertificate(){
+
+    //TODO: Create new SSL-Certificate
+
+}
+
 function execute(cmd):Boolean{
     let close:Boolean = false;
     switch(cmd){
+        case config.cmd.cert:
+            createCertificate();
+            break;
         case config.cmd.exit:
             process.send(config.cmd.exit);
             close = true;
