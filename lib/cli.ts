@@ -1,6 +1,7 @@
 //Imports
 import * as config          from "../package.json";
 import {PowerPrompt}        from "powerprompt";
+import * as projects        from "./projects.json";
 import * as sys             from "./system";
 
 //Constants
@@ -13,12 +14,30 @@ let started:Boolean         = false;
 process.on("message", execute);
 
 //Methods
-function execute(cmd):Boolean{
-    let close:Boolean = false;
+async function createProject(){
+    let name:string = await pp.input("Project-Name:")
+    if(sys.isNull(name) || name.length < 4){
+        pp.printError("Project-Name is shorter than 4 Characters")
+        await input();
+    }else{
+        let project = {
+            name: name
+        }
+        projects.projects.push(project);
+        sys.writeFile("./lib/projects.json", JSON.stringify(projects));
+        //sys.createFolder("./projects/" + name);
+
+
+    }
+}
+
+async function execute(cmd:string){
     switch(cmd){
         case config.cmd.exit:
             process.send(config.cmd.exit);
-            close = true;
+            break;
+        case config.cmd.new:
+            await createProject();
             break;
         case config.cmd_cli.start:
             if(!started){
@@ -28,16 +47,13 @@ function execute(cmd):Boolean{
             break;
         default:
             pp.printError("Unknown Command: " + cmd);
+            await input();
     }
-    return close;
 }
 
 async function input(){
     pp.printLine();
-    let close: Boolean = execute(await pp.input("Input >>"));
-    if(!close){
-        input().then();
-    }
+    await execute(await pp.input("Input >>"));
 }
 
 function printHelp():void{
@@ -58,9 +74,9 @@ function run():void{
     pp.printTitle(sys.capitalize(config.name) + " " + config.version);
     pp.printLine();
     if(config.http){
-        pp.print("Browser-Link: http://localhost:80")
+        pp.print("URL: http://" + config.host + ":" + config.port_http)
     }else{
-        pp.print("Browser-Link: https://localhost:8080")
+        pp.print("URL: https://" + config.host + ":" + config.port_http)
     }
     pp.printLine();
     printHelp();

@@ -5,6 +5,7 @@ Simple and lightweight TypeScript-Framework to host a lot of small- or medium-si
 
 ## Specifications
 - Dynamic Webserver
+- Integrates Web-Applications into Websites
 - CLI-Admin-Tool
 - Multithreaded
 - Host multiple Web-Projects
@@ -12,4 +13,5 @@ Simple and lightweight TypeScript-Framework to host a lot of small- or medium-si
 - Serverside rendered Webpages
 - Automated Page-Updates
 - Dynamic Content
+- Reusable Modules
 - Page-Routing

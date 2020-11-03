@@ -9,11 +9,12 @@ var cp = require("child_process");
 var fs = require("fs");
 var http = require("http");
 var https = require("https");
+var path = require("path");
 var pp = new powerprompt_1.PowerPrompt();
 //CLI
 var p_cli = cp.fork('./lib/cli');
 p_cli.on("message", executeCLI);
-//HTTP-/HTTPS-Server
+//HTTPS-Server
 var https_options = {
     key: fs.readFileSync("./lib/cert/key.pem"),
     cert: fs.readFileSync("./lib/cert/cert.pem")
@@ -66,11 +67,16 @@ function executeHTTP(req, res) {
 }
 function executeHTTPS(req, res) {
     res.writeHead(200, { "content-type": "text/html; charset=UTF-8" });
-    res.end("<h1>hello world</h1>\n");
-    //TODO: All
+    var url = new URL("https://" + config.host + "/" + req.url);
+    loadContent(url, res);
 }
 function init() {
     sys.createFolder("./projects");
+    sys.writeFile("./projects/projects.json", sys.getJSONProjects());
+}
+function loadContent(url, res) {
+    //TODO: All
+    res.end("<h1>hello world</h1>\n");
 }
 function run() {
     init();
