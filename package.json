@@ -17,7 +17,7 @@
     "license": "ISC",
     "dependencies": {
         "@types/node": "^14.14.6",
-        "powerprompt": "^1.1.4",
+        "powerprompt": "^1.1.5",
         "typescript": "^4.0.5"
     },
     "http": true,
@@ -26,11 +26,18 @@
     "host": "localhost",
     "timeout": 1000,
     "cmd": {
+        "config": "config",
         "delete": "delete",
         "exit": "exit",
-        "new": "new"
+        "help": "help",
+        "new": "new",
+        "show": "show"
     },
     "cmds": [
+        {
+            "name": "config",
+            "description": "Configure Project"
+        },
         {
             "name": "delete",
             "description": "Delete Project"
@@ -40,8 +47,16 @@
             "description": "Close Application"
         },
         {
+            "name": "help",
+            "description": "Show Commands"
+        },
+        {
             "name": "new",
             "description": "Create new Project"
+        },
+        {
+            "name": "show",
+            "description": "Show Projects"
         }
     ],
     "cmd_cli": {
