@@ -18,7 +18,18 @@ export function createFolder(pathString:string):void{
     if(!fs.existsSync(p)){
         fs.mkdir(p, (err) => {
             if(err){
-                pp.printError("ERROR: Could not create Directory: " + p);
+                pp.printError("Could not create Directory: " + p);
+            }
+        });
+    }
+}
+
+export function deleteFolder(pathString:string):void{
+    let p = path.join(pathString);
+    if(fs.existsSync(p)){
+        fs.rmdir(p, { recursive: true }, (err) => {
+            if(err){
+                pp.printError("Could not delete Directory: " + p);
             }
         });
     }
@@ -33,11 +44,13 @@ export function fillString(str:string, length:number, chars:string):string{
     return str;
 }
 
-export function getJSONProjects():string{
-    let obj = {
-        projects: []
+export function getProjectIndex(name:string, projects):number{
+    for(let i:number=0; i<projects.length; i++){
+        if(projects[i].name.toLowerCase() === name.toLowerCase()){
+            return i;
+        }
     }
-    return JSON.stringify(obj);
+    return -1;
 }
 
 export function isNull(obj){
@@ -50,11 +63,9 @@ export function isNull(obj){
 
 export function writeFile(pathString:string, data:string):void{
     let p = path.join(pathString);
-    if(!fs.existsSync(p)){
-        fs.writeFile(p, data, "utf-8", (err) => {
-            if(err){
-                pp.printError("Could not write File: " + err);
-            }
-        });
-    }
+    fs.writeFile(p, data, "utf-8", (err) => {
+        if(err){
+            pp.printError("Could not write File: " + err);
+        }
+    });
 }

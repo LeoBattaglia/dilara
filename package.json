@@ -26,10 +26,15 @@
     "host": "localhost",
     "timeout": 1000,
     "cmd": {
+        "delete": "delete",
         "exit": "exit",
         "new": "new"
     },
     "cmds": [
+        {
+            "name": "delete",
+            "description": "Delete Project"
+        },
         {
             "name": "exit",
             "description": "Close Application"

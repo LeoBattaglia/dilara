@@ -25,14 +25,42 @@ async function createProject(){
         }
         projects.projects.push(project);
         sys.writeFile("./lib/projects.json", JSON.stringify(projects));
-        //sys.createFolder("./projects/" + name);
-
-
+        sys.createFolder("./projects/" + name.toLowerCase());
+        pp.print("Project '" + name + "' is created");
+        await input();
     }
+}
+
+async function deleteProject(){
+    let options = [];
+    for(let project of projects.projects){
+        options.push(project.name);
+    }
+    let select = await pp.select("Select Project:", options);
+    pp.printLine();
+    let choose = await pp.choose("Do you really want to delete '" + select.toString() + "'?", "y", "n", "YES", "NO", false);
+    if(choose){
+        let index:number = sys.getProjectIndex(select.toString(), projects.projects);
+        if(index > -1){
+            projects.projects.splice(index, 1);
+            sys.writeFile("./lib/projects.json", JSON.stringify(projects));
+        }
+        sys.deleteFolder("./projects/" + select.toString().toLowerCase());
+        pp.print("Project '" + select.toString() + "' is deleted");
+        await input();
+    }else{
+        await input();
+    }
+
+    //TODO: All
+
 }
 
 async function execute(cmd:string){
     switch(cmd){
+        case config.cmd.delete:
+            await deleteProject();
+            break;
         case config.cmd.exit:
             process.send(config.cmd.exit);
             break;

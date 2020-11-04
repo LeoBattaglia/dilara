@@ -72,7 +72,6 @@ function executeHTTPS(req, res) {
 }
 function init() {
     sys.createFolder("./projects");
-    sys.writeFile("./projects/projects.json", sys.getJSONProjects());
 }
 function loadContent(url, res) {
     //TODO: All

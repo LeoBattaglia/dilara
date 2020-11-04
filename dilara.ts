@@ -82,7 +82,6 @@ function executeHTTPS(req, res){
 
 function init():void{
     sys.createFolder("./projects");
-    sys.writeFile("./projects/projects.json", sys.getJSONProjects());
 }
 
 function loadContent(url:URL, res):void{
