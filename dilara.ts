@@ -77,18 +77,46 @@ function executeHTTP(req, res){
 function executeHTTPS(req, res){
     res.writeHead(200, {"content-type": "text/html; charset=UTF-8"});
     const url = new URL("https://" + config.host + "/" + req.url);
-    loadContent(url, res);
+    route(url, res);
 }
 
 function init():void{
     sys.createFolder("./projects");
 }
 
-function loadContent(url:URL, res):void{
+function route(url:URL, res):void{
+    pp.print("\n");
+    pp.print("CCC: " + url.pathname);
+    const projects = require("./lib/projects.json");
+    if(projects.projects.length < 1){
+        res.end("ERROR: No Project to display");
+        pp.printError("No Project to display");
+    }else{
+        let pathString:string;
+        if(url.pathname === "//"){
+            pathString = "./projects/" + projects.projects[0].name.toLowerCase() + "/index.html";
+        }else{
+
+
+        }
+        fs.readFile(pathString, "utf8" , (err, data) => {
+            if(err){
+                pp.printError("Could not read File: " + pathString);
+            }else{
+                responseFile(data, res);
+            }
+        });
+    }
+
+
 
     //TODO: All
 
-    res.end("<h1>hello world</h1>\n");
+    //res.end("<h1>hello world</h1>\n");
+}
+
+function responseFile(data, res){
+    res.end(data);
 }
 
 function run():void{
