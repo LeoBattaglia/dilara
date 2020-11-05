@@ -1,37 +1,59 @@
 //Imports
 import * as config from "./package.json";
 import {PowerPrompt} from "powerprompt";
+import * as router from "./lib/router";
 import * as sys from "./lib/system";
 
 //Constants
+const cookieParser = require('cookie-parser');
 const cp = require("child_process");
+const express = require("express");
 const fs = require("fs");
-const http = require("http");
-const https = require("https");
-const path = require("path");
 const pp = new PowerPrompt();
+const uuid = require('uuid');
+
+//App
+const app = express();
+app.use(cookieParser());
 
 //CLI
 const p_cli = cp.fork('./lib/cli');
 p_cli.on("message", executeCLI);
 
-//HTTPS-Server
-const https_options = {
-    key: fs.readFileSync("./lib/cert/key.pem"),
-    cert: fs.readFileSync("./lib/cert/cert.pem")
-};
-const server = https.createServer(https_options, executeHTTPS).listen(config.port_https);
+//Server
+app.get("/*", function(req, res){
+    if(req.cookies["sid"] === undefined){
+        res.cookie("sid", uuid.v4());
 
-//HTTP-Server
-const server_http = http.createServer(executeHTTP).listen(config.port_http);
+        //TODO: Set Project to Cookie
+
+    }
+    //pp.print("");
+    //pp.print("COOKIE: " + req.cookies["sid"]);
+
+
+
+    let pathString:string = "./lib/default/dilara.html";
+    fs.readFile(pathString, "utf8", (err, data) => {
+        if(err){
+            pp.printError("Could not read File: " + pathString);
+            res.send("ERROR: Could not read File: " + pathString);
+        }else{
+            res.send(data);
+        }
+    });
+});
+
+app.listen(config.port_http, () =>{});
 
 //Start
 run();
 
 //Methods
 function close():void{
+    //app.close();
     pp.print("Close Application");
-    closeServers();
+    //closeServers();
     closeAllProcesses();
     pp.printLine();
     process.exit(0);
@@ -45,15 +67,6 @@ function closeCLI():void{
     p_cli.kill();
 }
 
-function closeServers(){
-    server.close(() => {
-        pp.printError("Could not close HTTPS-Server!");
-    });
-    server_http.close(() => {
-        pp.printError("Could not close HTTP-Server!");
-    });
-}
-
 function executeCLI(cmd:string):void{
     switch(cmd){
         case config.cmd.exit:
@@ -62,60 +75,63 @@ function executeCLI(cmd:string):void{
     }
 }
 
-function executeHTTP(req, res){
-    if(config.http){
-        executeHTTPS(req, res);
-    }else{
-        res.writeHead(200, {"content-type": "text/html; charset=UTF-8"});
-        res.write("<script>");
-        res.write("window.location = 'https://" + config.host + ":" + config.port_https + "';");
-        res.write("</script>");
-        res.end();
-    }
-}
-
-function executeHTTPS(req, res){
-    res.writeHead(200, {"content-type": "text/html; charset=UTF-8"});
-    const url = new URL("https://" + config.host + "/" + req.url);
-    route(url, res);
-}
-
 function init():void{
     sys.createFolder("./projects");
 }
 
-function route(url:URL, res):void{
-    pp.print("\n");
-    pp.print("CCC: " + url.pathname);
-    const projects = require("./lib/projects.json");
-    if(projects.projects.length < 1){
-        res.end("ERROR: No Project to display");
-        pp.printError("No Project to display");
-    }else{
-        let pathString:string;
-        if(url.pathname === "//"){
-            pathString = "./projects/" + projects.projects[0].name.toLowerCase() + "/index.html";
+/*function route(url:URL, res):void{
+    //if(url.pathname === "//favicon.ico"){
+        //responseFavIcon(res);
+    //}else{
+        const projects = require("./lib/projects.json");
+        if(projects.projects.length < 1){
+            pp.printError("No Project exist");
+            res.end("ERROR: No Project exist");
         }else{
-
-
-        }
-        fs.readFile(pathString, "utf8" , (err, data) => {
-            if(err){
-                pp.printError("Could not read File: " + pathString);
+            let pathString:string;
+            let error:boolean = false;
+            if(url.pathname === "//"){
+                pathString = "./projects/" + projects.projects[0].name.toLowerCase() + "/" + projects.projects[0].main;
             }else{
-                responseFile(data, res);
+                pathString = url.pathname;
+                while(pathString.indexOf("/") == 0){
+                    pathString = pathString.substring(1, pathString.length);
+                }
+                let name:string;
+                if(pathString.indexOf("/") < 0){
+                    name = pathString;
+                }else{
+                    name = pathString.substring(0, pathString.indexOf("/"));
+                }
+                let index:number = sys.getProjectIndex(name, projects.projects);
+                if(index < 0){
+                    error = true;
+                    pp.printError("Found no Project with Name '" + name + "'");
+                    res.end("ERROR: Found no Project with Name '" + name + "'");
+                }else{
+                    pathString = "./projects/" + name.toLowerCase() + "/" + projects.projects[index].main;
+                }
             }
-        });
-    }
-
+            if(!error){
+                fs.readFile(pathString, "utf8", (err, data) => {
+                    if(err){
+                        pp.printError("Could not read File: " + pathString);
+                        res.end("ERROR: Could not read File: " + pathString);
+                    }else{
+                        responseFile(data, res);
+                    }
+                });
+            }
+        }
+    //}
 
 
     //TODO: All
 
     //res.end("<h1>hello world</h1>\n");
-}
+}*/
 
-function responseFile(data, res){
+function responseFile(data, res):void{
     res.end(data);
 }
 

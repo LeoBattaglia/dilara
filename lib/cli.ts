@@ -45,7 +45,8 @@ async function createProject(){
             input().then();
         }else{
             let project = {
-                name: name
+                name: name,
+                main: "index.html"
             }
             projects.projects.push(project);
             sys.writeFile("./lib/projects.json", JSON.stringify(projects));

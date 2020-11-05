@@ -1,7 +1,8 @@
 {
     "projects":[
         {
-            "name":"test"
+            "name":"test",
+            "main":"index.html"
         }
     ]
 }

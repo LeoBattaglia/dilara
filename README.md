@@ -1,5 +1,5 @@
 # Dilara
-Simple and lightweight TypeScript-Framework to host a lot of small- or medium-sized web-projects.
+Simple and lightweight TypeScript- & Express-Framework to host a lot of small- or medium-sized Web-Projects on one Webserver.
 
 **NOT USABLE AT THE MOMENT --> PLEASE VISIT US LATER AGAIN**
 
