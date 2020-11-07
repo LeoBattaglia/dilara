@@ -10,6 +10,7 @@ var p_cli = interface_1.cp.fork('./lib/cli');
 p_cli.on("message", executeCLI);
 //Server
 app.get("/*", function (req, res) {
+    //pp.print("GO");
     interface_1.router.route(req, res);
 });
 app.listen(interface_1.config.port_http, function () { });
@@ -37,7 +38,7 @@ function executeCLI(cmd) {
     }
 }
 function init() {
-    //sys.createFolder("./projects");
+    interface_1.sys.copyFile("./lib/default/sessions.json", "./lib/data/sessions.json");
 }
 function run() {
     init();

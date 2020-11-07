@@ -11,6 +11,7 @@ p_cli.on("message", executeCLI);
 
 //Server
 app.get("/*", (req, res) => {
+    //pp.print("GO");
     router.route(req, res);
 });
 
@@ -45,7 +46,7 @@ function executeCLI(cmd:string):void{
 }
 
 function init():void{
-    //sys.createFolder("./projects");
+    sys.copyFile("./lib/default/sessions.json", "./lib/data/sessions.json");
 }
 
 function run():void{

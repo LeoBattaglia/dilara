@@ -1,4 +1,32 @@
-import {fs, pp, projects, sys, uuid} from "./interface";
+import {fs, pp, projects, ss, sys, uuid} from "./interface";
+
+function getPath(project:string, url):string{
+    let path:string = "./projects/" + project + "/";
+    if(url.paths.length > 1){
+        for(let i=1; i<url.paths.length; i++){
+            path += url.paths[i] + "/";
+        }
+    }
+    if(url.file === undefined){
+        path += projects[sys.getProjectIndex(project)].main;
+    }else{
+        path += url.file;
+    }
+    return path;
+}
+
+function getProjectFromCookie(req):string{
+    let project = undefined;
+    if(req.cookies["sid"] !== undefined){
+        for(let session of ss){
+            if(session.sid === req.cookies["sid"]){
+                project = session.project;
+                break;
+            }
+        }
+    }
+    return project;
+}
 
 function parseURL(url:string){
     let split:string[] = url.split("/");
@@ -19,50 +47,36 @@ function parseURL(url:string){
     }
 }
 
-export function route(req, res){
+export function route(req, res):void{
     let url = parseURL(req.url);
-    let project:string;
     if(url.paths.length < 1){
         url.paths.push("dilara");
     }
-    project = url.paths[0];
-
-
-    /*let path:string;
-    let project:string = undefined;
-    if(url.paths.length < 1){
-        path = "./projects/main/";
-        project = "main";
-    }else{
-        path = "./projects/";
-        for(let p of url.paths){
-            if(project === undefined){
-                project = p;
-            }
-            path += p + "/";
+    let project:string = getProjectFromCookie(req);
+    if(project === undefined){
+        let sid = uuid.v4();
+        res.cookie("sid", sid);
+        project = url.paths[0];
+        if(!sys.isProjectNameExist(project)){
+            project = "Dilara";
         }
+        setSession(sid, project);
     }
-    if(req.cookies["sid"] === undefined){
-        res.cookie("sid", uuid.v4());
-        res.cookie("project", project);
-        res.cookie("project_path", path);
-    }
-    let pathString:string;
-    if(url.file === undefined){
-        if(project === "main"){
-            pathString = path + projects[0].main;
-        }else{
-            pathString = path + projects[sys.getProjectIndex(project)].main;
-        }
-    }else{
-        pathString = path + url.file;
-    }
-    fs.readFile(pathString, (err, data) => {
+    let path:string = getPath(project, url);
+    fs.readFile(path, (err, data) => {
         if(err){
-            pp.printError("Could not read File: " + pathString);
-            res.end("ERROR: Could not read File: " + pathString);
+            pp.printError("Could not read File: " + path);
+            res.end("ERROR: Could not read File: " + path);
         }else{
             res.end(data);
         }
-    });*/
+    });
+}
+
+function setSession(sid, project:string):void{
+    let session = {
+        sid: sid,
+        project: project
+    }
+    ss.push(session);
 }

@@ -3,3 +3,4 @@
 /projects/*
 !/projects/dilara
 dilara.iml
+/lib/data/sessions.json

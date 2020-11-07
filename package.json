@@ -39,6 +39,7 @@
         "exit": "exit",
         "help": "help",
         "new": "new",
+        "sessions": "sessions",
         "show": "show"
     },
     "cmds": [
@@ -61,6 +62,10 @@
         {
             "name": "new",
             "description": "Create new Project"
+        },
+        {
+            "name": "sessions",
+            "description": "Show Sessions"
         },
         {
             "name": "show",

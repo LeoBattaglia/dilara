@@ -1,5 +1,5 @@
 //Imports
-import {config, pp, projects, prs, sys} from "./interface";
+import {config, pp, projects, prs, ss, sys} from "./interface";
 
 //Variables
 let started:Boolean         = false;
@@ -98,6 +98,10 @@ async function execute(cmd:string){
         case config.cmd.new:
             await createProject();
             break;
+        case config.cmd.sessions:
+            printSessions();
+            input().then();
+            break;
         case config.cmd.show:
             printProjects();
             input().then();
@@ -152,6 +156,18 @@ function printProjects(){
         pp.printInput("Projects:");
         for(let project of projects){
             pp.print("- " + project.name);
+        }
+    }
+}
+
+function printSessions(){
+    pp.printLine();
+    if(ss.length < 1){
+        pp.print("No Session exists")
+    }else{
+        pp.printInput("Sessions:");
+        for(let session of ss){
+            pp.print("- " + session.sid + " (Project: " + session.project + ")");
         }
     }
 }
