@@ -1,6 +1,6 @@
 {
     "name": "dilara",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "NOT USABLE: Simple and lightweight TypeScript-Framework to host a lot of small- or medium-sized web-projects.",
     "main": "dilara.js",
     "scripts": {},
