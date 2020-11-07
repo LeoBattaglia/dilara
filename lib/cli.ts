@@ -1,11 +1,5 @@
 //Imports
-import * as config          from "../package.json";
-import {PowerPrompt}        from "powerprompt";
-import * as projects        from "./projects.json";
-import * as sys             from "./system";
-
-//Constants
-const pp                    = new PowerPrompt();
+import {config, pp, projects, sys} from "./interface";
 
 //Variables
 let started:Boolean         = false;
@@ -15,13 +9,13 @@ process.on("message", execute);
 
 //Methods
 async function configProject(){
-    if(projects.projects.length < 1){
+    if(projects.length < 1){
         pp.printError("No Project exists")
         input().then();
     }else{
         let project;
-        if(projects.projects.length == 1){
-            project = projects.projects[0].name;
+        if(projects.length == 1){
+            project = projects[0].name;
         }else{
             project = await pp.select("Select Project:", getProjectNames());
         }
@@ -40,7 +34,7 @@ async function createProject(){
         pp.printError("Project-Name is shorter than 4 Characters")
         input().then();
     }else{
-        if(sys.isProjectNameExist(name, projects.projects)){
+        if(sys.isProjectNameExist(name)){
             pp.printError("Project '" + name + "' already exists")
             input().then();
         }else{
@@ -48,7 +42,7 @@ async function createProject(){
                 name: name,
                 main: "index.html"
             }
-            projects.projects.push(project);
+            projects.push(project);
             sys.writeFile("./lib/projects.json", JSON.stringify(projects));
             sys.createFolder("./projects/" + name.toLowerCase());
             sys.copyFile("./lib/default/index.html", "./projects/" + name.toLowerCase() + "/index.html");
@@ -59,22 +53,22 @@ async function createProject(){
 }
 
 async function deleteProject(){
-    if(projects.projects.length < 1){
+    if(projects.length < 1){
         pp.printError("No Project exists")
         input().then();
     }else{
         let project;
-        if(projects.projects.length == 1){
-            project = projects.projects[0].name;
+        if(projects.length == 1){
+            project = projects[0].name;
         }else{
             project = await pp.select("Select Project:", getProjectNames());
         }
         pp.printLine();
         let choose = await pp.choose("Do you really want to delete '" + project.toString() + "'?", "y", "n", "YES", "NO", false);
         if(choose){
-            let index:number = sys.getProjectIndex(project.toString(), projects.projects);
+            let index:number = sys.getProjectIndex(project.toString());
             if(index > -1){
-                projects.projects.splice(index, 1);
+                projects.splice(index, 1);
                 sys.writeFile("./lib/projects.json", JSON.stringify(projects));
             }
             sys.deleteFolder("./projects/" + project.toString().toLowerCase());
@@ -122,7 +116,7 @@ async function execute(cmd:string){
 
 function getProjectNames():string[]{
     let names = [];
-    for(let project of projects.projects){
+    for(let project of projects){
         names.push(project.name);
     }
     return names;
@@ -149,11 +143,11 @@ function printHelp():void{
 
 function printProjects(){
     pp.printLine();
-    if(projects.projects.length < 1){
+    if(projects.length < 1){
         pp.print("No Project exists")
     }else{
         pp.printInput("Projects:");
-        for(let project of projects.projects){
+        for(let project of projects){
             pp.print("- " + project.name);
         }
     }

@@ -1,12 +1,5 @@
-//Requires
-const fs                    = require("fs");
-const path                  = require("path");
-
 //Imports
-import {PowerPrompt}        from "powerprompt";
-
-//Constants
-const pp                    = new PowerPrompt();
+import {fs, path, pp, projects} from "./interface";
 
 //Methods
 export function capitalize(str:string):string{
@@ -56,7 +49,7 @@ export function fillString(str:string, length:number, chars:string):string{
     return str;
 }
 
-export function getProjectIndex(name:string, projects):number{
+export function getProjectIndex(name:string):number{
     for(let i:number=0; i<projects.length; i++){
         if(projects[i].name.toLowerCase() === name.toLowerCase()){
             return i;
@@ -73,7 +66,7 @@ export function isNull(obj):Boolean{
     }
 }
 
-export function isProjectNameExist(name:string, projects):Boolean{
+export function isProjectNameExist(name:string):Boolean{
     for(let project of projects){
         if(project.name.toLowerCase() === name.toLowerCase()){
             return true;

@@ -1,51 +1,86 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 //Imports
-var config = require("./package.json");
-var powerprompt_1 = require("powerprompt");
-var sys = require("./lib/system");
-//Constants
-var cookieParser = require('cookie-parser');
-var cp = require("child_process");
-var express = require("express");
-var fs = require("fs");
-var pp = new powerprompt_1.PowerPrompt();
-var uuid = require('uuid');
+var interface_1 = require("./lib/interface");
 //App
-var app = express();
-app.use(cookieParser());
+var app = interface_1.express();
+app.use(interface_1.cookieParser());
 //CLI
-var p_cli = cp.fork('./lib/cli');
+var p_cli = interface_1.cp.fork('./lib/cli');
 p_cli.on("message", executeCLI);
 //Server
 app.get("/*", function (req, res) {
-    if (req.cookies["sid"] === undefined) {
-        res.cookie("sid", uuid.v4());
-        //TODO: Set Project to Cookie
+    var split = req.url.split("/");
+    var file = undefined;
+    var paths = [];
+    for (var _i = 0, split_1 = split; _i < split_1.length; _i++) {
+        var str = split_1[_i];
+        if (!interface_1.sys.isNull(str)) {
+            if (str.indexOf(".") > 0) {
+                file = str;
+            }
+            else {
+                paths.push(str);
+            }
+        }
     }
-    //pp.print("");
-    //pp.print("COOKIE: " + req.cookies["sid"]);
-    var pathString = "./lib/default/dilara.html";
-    fs.readFile(pathString, "utf8", function (err, data) {
-        if (err) {
-            pp.printError("Could not read File: " + pathString);
-            res.send("ERROR: Could not read File: " + pathString);
+    var path;
+    var project = undefined;
+    if (paths.length < 1) {
+        path = "./lib/default/";
+        project = "main";
+    }
+    else {
+        path = "./projects/";
+        for (var _a = 0, paths_1 = paths; _a < paths_1.length; _a++) {
+            var p = paths_1[_a];
+            if (project === undefined) {
+                project = p;
+            }
+            path += p + "/";
+        }
+    }
+    if (req.cookies["sid"] === undefined) {
+        res.cookie("sid", interface_1.uuid.v4());
+        res.cookie("project", project);
+        res.cookie("project_path", path);
+    }
+    var pathString;
+    if (file === undefined) {
+        if (project === "main") {
+            pathString = path + "dilara.html";
         }
         else {
-            res.send(data);
+            pathString = path + interface_1.projects[interface_1.sys.getProjectIndex(project)].main;
+        }
+    }
+    else {
+        pathString = path + file;
+    }
+    interface_1.pp.print("BBB: " + pathString);
+    interface_1.pp.printLine();
+    interface_1.fs.readFile(pathString, function (err, data) {
+        //res.set('Content-Type', 'text/html');
+        if (err) {
+            interface_1.pp.printError("Could not read File: " + pathString);
+            res.end("ERROR: Could not read File: " + pathString);
+        }
+        else {
+            //pp.print("FFF: " + data.toString());
+            res.end(data);
         }
     });
 });
-app.listen(config.port_http, function () { });
+app.listen(interface_1.config.port_http, function () { });
 //Start
 run();
 //Methods
 function close() {
     //app.close();
-    pp.print("Close Application");
+    interface_1.pp.print("Close Application");
     //closeServers();
     closeAllProcesses();
-    pp.printLine();
+    interface_1.pp.printLine();
     process.exit(0);
 }
 function closeAllProcesses() {
@@ -56,70 +91,19 @@ function closeCLI() {
 }
 function executeCLI(cmd) {
     switch (cmd) {
-        case config.cmd.exit:
+        case interface_1.config.cmd.exit:
             close();
             break;
     }
 }
 function init() {
-    sys.createFolder("./projects");
+    interface_1.sys.createFolder("./projects");
 }
-/*function route(url:URL, res):void{
-    //if(url.pathname === "//favicon.ico"){
-        //responseFavIcon(res);
-    //}else{
-        const projects = require("./lib/projects.json");
-        if(projects.projects.length < 1){
-            pp.printError("No Project exist");
-            res.end("ERROR: No Project exist");
-        }else{
-            let pathString:string;
-            let error:boolean = false;
-            if(url.pathname === "//"){
-                pathString = "./projects/" + projects.projects[0].name.toLowerCase() + "/" + projects.projects[0].main;
-            }else{
-                pathString = url.pathname;
-                while(pathString.indexOf("/") == 0){
-                    pathString = pathString.substring(1, pathString.length);
-                }
-                let name:string;
-                if(pathString.indexOf("/") < 0){
-                    name = pathString;
-                }else{
-                    name = pathString.substring(0, pathString.indexOf("/"));
-                }
-                let index:number = sys.getProjectIndex(name, projects.projects);
-                if(index < 0){
-                    error = true;
-                    pp.printError("Found no Project with Name '" + name + "'");
-                    res.end("ERROR: Found no Project with Name '" + name + "'");
-                }else{
-                    pathString = "./projects/" + name.toLowerCase() + "/" + projects.projects[index].main;
-                }
-            }
-            if(!error){
-                fs.readFile(pathString, "utf8", (err, data) => {
-                    if(err){
-                        pp.printError("Could not read File: " + pathString);
-                        res.end("ERROR: Could not read File: " + pathString);
-                    }else{
-                        responseFile(data, res);
-                    }
-                });
-            }
-        }
-    //}
-
-
-    //TODO: All
-
-    //res.end("<h1>hello world</h1>\n");
-}*/
 function responseFile(data, res) {
     res.end(data);
 }
 function run() {
     init();
-    p_cli.send(config.cmd_cli.start);
+    p_cli.send(interface_1.config.cmd_cli.start);
 }
 //# sourceMappingURL=dilara.js.map
