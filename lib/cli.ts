@@ -43,7 +43,7 @@ async function createProject(){
                 main: "index.html"
             }
             projects.push(project);
-            sys.writeFile("./lib/projects.json", JSON.stringify(prs));
+            sys.writeFile("./lib/data/projects.json", JSON.stringify(prs));
             sys.createFolder("./projects/" + name.toLowerCase());
             sys.copyFile("./lib/default/index.html", "./projects/" + name.toLowerCase() + "/index.html");
             pp.print("Project '" + name + "' is created");
@@ -54,7 +54,7 @@ async function createProject(){
 
 async function deleteProject(){
     if(projects.length < 2){
-        pp.printError("No Project exists")
+        pp.printError("There is no Project to delete")
         input().then();
     }else{
         let project;
@@ -69,7 +69,7 @@ async function deleteProject(){
             let index:number = sys.getProjectIndex(project.toString());
             if(index > -1){
                 projects.splice(index, 1);
-                sys.writeFile("./lib/projects.json", JSON.stringify(projects));
+                sys.writeFile("./lib/data/projects.json", JSON.stringify(prs));
             }
             sys.deleteFolder("./projects/" + project.toString().toLowerCase());
             pp.print("Project '" + project.toString() + "' is deleted");

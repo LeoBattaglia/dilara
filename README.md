@@ -8,7 +8,7 @@ Simple and lightweight TypeScript- & Express-Framework to host a lot of small- o
 - Integrates Web-Applications into Websites
 - CLI-Admin-Tool
 - Multithreaded
-- Host multiple Web-Projects
+- Host multiple Web-Projects for different Domains
 - Easy Database-Integration (MySQL)
 - Serverside rendered Webpages
 - Automated Page-Updates
