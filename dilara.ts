@@ -45,7 +45,7 @@ function executeCLI(cmd:string):void{
 }
 
 function init():void{
-    sys.createFolder("./projects");
+    //sys.createFolder("./projects");
 }
 
 function run():void{

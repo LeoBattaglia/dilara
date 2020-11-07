@@ -14,6 +14,7 @@ export const fs             = require("fs");
 export const path           = require("path");
 export const pp             = new PowerPrompt();
 export const projects       = Projects.projects;
+export const prs            = Projects;
 export const router         = Router;
 export const sys            = System;
 export const uuid           = require('uuid');

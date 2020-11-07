@@ -37,7 +37,7 @@ function executeCLI(cmd) {
     }
 }
 function init() {
-    interface_1.sys.createFolder("./projects");
+    //sys.createFolder("./projects");
 }
 function run() {
     init();

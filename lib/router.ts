@@ -1,7 +1,7 @@
 import {fs, pp, projects, sys, uuid} from "./interface";
 
-export function route(req, res){
-    let split:string[] = req.url.split("/");
+function parseURL(url:string){
+    let split:string[] = url.split("/");
     let file:string = undefined;
     let paths:string[] = [];
     for(let str of split){
@@ -13,14 +13,29 @@ export function route(req, res){
             }
         }
     }
-    let path:string;
+    return {
+        file: file,
+        paths: paths
+    }
+}
+
+export function route(req, res){
+    let url = parseURL(req.url);
+    let project:string;
+    if(url.paths.length < 1){
+        url.paths.push("dilara");
+    }
+    project = url.paths[0];
+
+
+    /*let path:string;
     let project:string = undefined;
-    if(paths.length < 1){
-        path = "./lib/default/";
+    if(url.paths.length < 1){
+        path = "./projects/main/";
         project = "main";
     }else{
         path = "./projects/";
-        for(let p of paths){
+        for(let p of url.paths){
             if(project === undefined){
                 project = p;
             }
@@ -33,24 +48,21 @@ export function route(req, res){
         res.cookie("project_path", path);
     }
     let pathString:string;
-    if(file === undefined){
+    if(url.file === undefined){
         if(project === "main"){
-            pathString = path + "dilara.html";
+            pathString = path + projects[0].main;
         }else{
             pathString = path + projects[sys.getProjectIndex(project)].main;
         }
     }else{
-        pathString = path + file;
+        pathString = path + url.file;
     }
-    //pp.print("BBB: " + pathString);
-    //pp.printLine();
     fs.readFile(pathString, (err, data) => {
-        //res.set('Content-Type', 'text/html');
         if(err){
             pp.printError("Could not read File: " + pathString);
             res.end("ERROR: Could not read File: " + pathString);
         }else{
             res.end(data);
         }
-    });
+    });*/
 }

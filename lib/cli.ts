@@ -1,5 +1,5 @@
 //Imports
-import {config, pp, projects, sys} from "./interface";
+import {config, pp, projects, prs, sys} from "./interface";
 
 //Variables
 let started:Boolean         = false;
@@ -17,7 +17,7 @@ async function configProject(){
         if(projects.length == 1){
             project = projects[0].name;
         }else{
-            project = await pp.select("Select Project:", getProjectNames());
+            project = await pp.select("Select Project:", getProjectNames(false));
         }
         pp.printLine();
         pp.print("Configure Project '" + project.toString() + "'");
@@ -43,7 +43,7 @@ async function createProject(){
                 main: "index.html"
             }
             projects.push(project);
-            sys.writeFile("./lib/projects.json", JSON.stringify(projects));
+            sys.writeFile("./lib/projects.json", JSON.stringify(prs));
             sys.createFolder("./projects/" + name.toLowerCase());
             sys.copyFile("./lib/default/index.html", "./projects/" + name.toLowerCase() + "/index.html");
             pp.print("Project '" + name + "' is created");
@@ -53,15 +53,15 @@ async function createProject(){
 }
 
 async function deleteProject(){
-    if(projects.length < 1){
+    if(projects.length < 2){
         pp.printError("No Project exists")
         input().then();
     }else{
         let project;
-        if(projects.length == 1){
-            project = projects[0].name;
+        if(projects.length == 2){
+            project = projects[1].name;
         }else{
-            project = await pp.select("Select Project:", getProjectNames());
+            project = await pp.select("Select Project:", getProjectNames(true));
         }
         pp.printLine();
         let choose = await pp.choose("Do you really want to delete '" + project.toString() + "'?", "y", "n", "YES", "NO", false);
@@ -114,10 +114,13 @@ async function execute(cmd:string){
     }
 }
 
-function getProjectNames():string[]{
+function getProjectNames(skipFirst:Boolean):string[]{
     let names = [];
     for(let project of projects){
         names.push(project.name);
+    }
+    if(names.length > 0 && skipFirst){
+        names.shift();
     }
     return names;
 }
