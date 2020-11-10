@@ -1,17 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-//Imports
+//Default-Imports
 var interface_1 = require("./lib/interface");
+//Imports
+var router = require("./lib/router");
 //App
-var app = interface_1.express();
-app.use(interface_1.cookieParser());
+var app = require("express")();
+app.use(require('cookie-parser')());
 //CLI
-var p_cli = interface_1.cp.fork('./lib/cli');
+var cp = require("child_process");
+var p_cli = cp.fork('./lib/cli');
 p_cli.on("message", executeCLI);
-//Server
+//Server-Listener
 app.get("/*", function (req, res) {
-    //pp.print("GO");
-    interface_1.router.route(req, res);
+    router.route(req, res);
 });
 app.listen(interface_1.config.port_http, function () { });
 //Start
@@ -34,6 +36,10 @@ function executeCLI(cmd) {
     switch (cmd) {
         case interface_1.config.cmd.exit:
             close();
+            break;
+        case interface_1.config.cmd.sessions:
+            router.printSessions();
+            p_cli.send(interface_1.config.cmd_cli.input);
             break;
     }
 }

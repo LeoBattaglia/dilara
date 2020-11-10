@@ -1,5 +1,5 @@
 //Imports
-import {config, pp, projects, prs, ss, sys} from "./interface";
+import {config, pp, projects, prs, sys} from "./interface";
 
 //Variables
 let started:Boolean         = false;
@@ -22,12 +22,25 @@ async function configProject(){
         pp.printLine();
         pp.print("Configure Project '" + project.toString() + "'");
 
-        pp.printError("Function 'configProject' is not finished");
+        pp.printError("--> Function 'configProject' is not finished");
         //TODO: All
 
         input().then();
     }
 }
+
+function copyProjectFiles(path:string):void{
+    sys.createFolder(path);
+    sys.createFolder(path + "/modules");
+    sys.createFolder(path + "/modules/index");
+    sys.copyFile("./lib/default/global.css", path + "/global.css");
+    //sys.copyFile("./lib/default/favicon.ico", path + "/favicon.ico");
+    sys.copyFile("./lib/default/index.html", path + "/modules/index/index.html");
+    sys.copyFile("./lib/default/index.css", path + "/modules/index/index.css");
+    sys.copyFile("./lib/default/index.ts", path + "/modules/index/index.ts");
+    sys.copyFile("./lib/default/icon.png", path + "/modules/index/icon.png");
+}
+
 async function createProject(){
     let name:string = await pp.input("Project-Name:")
     if(sys.isNull(name) || name.length < 4){
@@ -40,12 +53,14 @@ async function createProject(){
         }else{
             let project = {
                 name: name,
-                main: "index.html"
+                pages: [{
+                    name: "index"
+                }]
             }
             projects.push(project);
             sys.writeFile("./lib/data/projects.json", JSON.stringify(prs));
-            sys.createFolder("./projects/" + name.toLowerCase());
-            sys.copyFile("./lib/default/index.html", "./projects/" + name.toLowerCase() + "/index.html");
+            let path:string = "./projects/" + name.toLowerCase();
+            copyProjectFiles(path);
             pp.print("Project '" + name + "' is created");
             input().then();
         }
@@ -99,11 +114,14 @@ async function execute(cmd:string){
             await createProject();
             break;
         case config.cmd.sessions:
-            printSessions();
-            input().then();
+            process.send(config.cmd.sessions);
+            //input().then();
             break;
         case config.cmd.show:
             printProjects();
+            input().then();
+            break;
+        case config.cmd_cli.input:
             input().then();
             break;
         case config.cmd_cli.start:
@@ -160,7 +178,10 @@ function printProjects(){
     }
 }
 
-function printSessions(){
+/*function printSessions(){
+
+    //TODO: Does not show Sessions
+
     pp.printLine();
     if(ss.length < 1){
         pp.print("No Session exists")
@@ -170,7 +191,7 @@ function printSessions(){
             pp.print("- " + session.sid + " (Project: " + session.project + ")");
         }
     }
-}
+}*/
 
 function run():void{
     pp.printLine();

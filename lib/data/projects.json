@@ -1,1 +1,23 @@
-{"projects":[{"name":"Dilara","main":"dilara.html"}]}
+{
+    "projects":[
+        {
+            "name":"Dilara",
+            "pages":[
+                {
+                    "name":"index"
+                },
+                {
+                    "name":"test"
+                }
+            ]
+        },
+        {
+            "name":"test",
+            "pages":[
+                {
+                    "name":"index"
+                }
+            ]
+        }
+    ]
+}

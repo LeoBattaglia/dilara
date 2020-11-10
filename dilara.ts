@@ -1,20 +1,22 @@
+//Default-Imports
+import {config, pp, sys} from "./lib/interface";
+
 //Imports
-import {cookieParser, config, cp, express, pp, router, sys} from "./lib/interface";
+import * as router   from "./lib/router";
 
 //App
-const app = express();
-app.use(cookieParser());
+const app = require("express")();
+app.use(require('cookie-parser')());
 
 //CLI
+const cp = require("child_process");
 const p_cli = cp.fork('./lib/cli');
 p_cli.on("message", executeCLI);
 
-//Server
+//Server-Listener
 app.get("/*", (req, res) => {
-    //pp.print("GO");
     router.route(req, res);
 });
-
 app.listen(config.port_http, () =>{});
 
 //Start
@@ -41,6 +43,10 @@ function executeCLI(cmd:string):void{
     switch(cmd){
         case config.cmd.exit:
             close();
+            break;
+        case config.cmd.sessions:
+            router.printSessions();
+            p_cli.send(config.cmd_cli.input);
             break;
     }
 }

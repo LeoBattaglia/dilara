@@ -15,3 +15,4 @@ Simple and lightweight TypeScript- & Express-Framework to host a lot of small- o
 - Dynamic Content
 - Reusable Modules
 - Page-Routing
+- Requests per URL without Parameters
