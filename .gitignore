@@ -1,6 +1,4 @@
 /.idea
+/.old
 /node_modules
-/projects/*
-!/projects/dilara
 dilara.iml
-/lib/data/sessions.json
