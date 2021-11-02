@@ -1,0 +1,10 @@
+#table
+#name:	user
+#cell:	type:string;	    name:mail;		    not_null:true
+#cell:	type:string;	    name:password;	    not_null:true
+#cell:	type:int;	        name:active
+#key:	type:unique;        name:main_index;	index:mail
+#ins:   lb@jdev.ch;         1234;               1
+#ins:   cb@jdev.ch;         1234;               1
+#create
+///////////////////////////////////////////////////////////////////////////////////////////////

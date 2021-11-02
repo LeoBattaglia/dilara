@@ -1,0 +1,10 @@
+{
+  "autostart":          true,
+  "db_host":            "localhost",
+  "db_pw":              "Msql$10",
+  "db_reset":           true,
+  "db_schema":          "jdev",
+  "db_user":            "root",
+  "host":               "localhost",
+  "port":               80
+}

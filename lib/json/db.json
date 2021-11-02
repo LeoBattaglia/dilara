@@ -1,0 +1,46 @@
+{
+    "tables": [
+        {
+            "name": "user",
+            "cells": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "length": 11,
+                    "not_null": true,
+                    "auto_increment": true
+                },
+                {
+                    "name": "mail",
+                    "type": "varchar",
+                    "length": 255,
+                    "not_null": true
+                },
+                {
+                    "name": "password",
+                    "type": "varchar",
+                    "length": 255,
+                    "not_null": true
+                },
+                {
+                    "name": "active",
+                    "type": "int",
+                    "length": 11,
+                    "not_null": true,
+                    "default": 0
+                }
+            ],
+            "keys": [
+                {
+                    "type": "primary_key",
+                    "cells": ["id"]
+                },
+                {
+                    "type": "unique_key",
+                    "name": "main_index",
+                    "cells": ["name"]
+                }
+            ]
+        }
+    ]
+}
