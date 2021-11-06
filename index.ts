@@ -120,8 +120,8 @@ export class DB{
         }
     }
 
-    private executeQuery(query:string, info?:Boolean){
-        //executeQuery = (query:string, info?:Boolean) => {
+    //private executeQuery(query:string, info?:Boolean){
+        executeQuery = (query:string, info?:Boolean) => {
         return new Promise((resolve, reject) => {
             let pool;
             if(info === true){
