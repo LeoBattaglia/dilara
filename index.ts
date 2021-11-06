@@ -8,9 +8,11 @@ import {MySQL_CreateSchema, MySQL_Delete, MySQL_Drop, MySQL_InsertOrUpdate, MySQ
 export {MySQL_Delete, MySQL_InsertOrUpdate, MySQL_Select} from "./src/db/db_mysql";
 
 //Constants
-const connection_limit:number = 10;
-const connection_limit_info:number = 5;
 const mysql = require("mysql");
+
+//Declarations
+let connection_limit:number = 10;
+let connection_limit_info:number = 5;
 
 //Classes
 export class DB{
@@ -189,11 +191,16 @@ export class DB{
         await this.checkTables();
     }
 
-    setReset(reset:Boolean):void{
-        this.reset = reset;
-    }
-
     async select(query:MySQL_Select){
         return await this.executeQuery(query.getQuery());
+    }
+
+    setConnectionLimits(limit:number, limit_info:number){
+        connection_limit = limit;
+        connection_limit_info = limit_info;
+    }
+
+    setReset(reset:Boolean):void{
+        this.reset = reset;
     }
 }

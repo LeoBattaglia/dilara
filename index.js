@@ -20,9 +20,10 @@ Object.defineProperty(exports, "MySQL_Delete", { enumerable: true, get: function
 Object.defineProperty(exports, "MySQL_InsertOrUpdate", { enumerable: true, get: function () { return db_mysql_2.MySQL_InsertOrUpdate; } });
 Object.defineProperty(exports, "MySQL_Select", { enumerable: true, get: function () { return db_mysql_2.MySQL_Select; } });
 //Constants
-const connection_limit = 10;
-const connection_limit_info = 5;
 const mysql = require("mysql");
+//Declarations
+let connection_limit = 10;
+let connection_limit_info = 5;
 //Classes
 class DB {
     //Constructor
@@ -197,13 +198,17 @@ class DB {
             yield this.checkTables();
         });
     }
-    setReset(reset) {
-        this.reset = reset;
-    }
     select(query) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.executeQuery(query.getQuery());
         });
+    }
+    setConnectionLimits(limit, limit_info) {
+        connection_limit = limit;
+        connection_limit_info = limit_info;
+    }
+    setReset(reset) {
+        this.reset = reset;
     }
 }
 exports.DB = DB;
