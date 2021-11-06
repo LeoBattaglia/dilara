@@ -128,9 +128,10 @@ function getQueryLongtext(cell) {
     if (getCellNotNull(cell.getPara("not_null"))) {
         query += " NOT NULL";
     }
-    let def = "''";
+    /*let def:string = "''";
     def = getCellDefault(def, cell.getPara("default"));
-    query += " DEFAULT " + def + ",\n";
+    query += " DEFAULT " + def + ",\n";*/
+    query += "\n";
     return query;
 }
 function getQueryString(cell) {
