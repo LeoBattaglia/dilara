@@ -185,7 +185,7 @@ class DB {
             while (table.inserts.length > 0) {
                 let insert = table.inserts[0];
                 table.inserts.shift();
-                let query = new db_mysql_1.MySQL_InsertOrUpdate(table);
+                let query = new db_mysql_1.MySQL_InsertOrUpdate(table.name);
                 let insert_split = insert.split(";");
                 for (let i = 0; i < insert_split.length; i++) {
                     query.addValue(table.cells[i + 1].getPara("name"), insert_split[i].trim());

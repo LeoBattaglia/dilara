@@ -179,7 +179,7 @@ export class DB{
         while(table.inserts.length > 0){
             let insert:string = table.inserts[0];
             table.inserts.shift();
-            let query:MySQL_InsertOrUpdate = new MySQL_InsertOrUpdate(table);
+            let query:MySQL_InsertOrUpdate = new MySQL_InsertOrUpdate(table.name);
             let insert_split:string[] = insert.split(";")
             for(let i:number=0; i<insert_split.length; i++){
                 query.addValue(table.cells[i+1].getPara("name"), insert_split[i].trim());
