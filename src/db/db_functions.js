@@ -131,7 +131,7 @@ function getQueryLongtext(cell) {
     /*let def:string = "''";
     def = getCellDefault(def, cell.getPara("default"));
     query += " DEFAULT " + def + ",\n";*/
-    query += "\n";
+    query += ",\n";
     return query;
 }
 function getQueryString(cell) {
