@@ -120,8 +120,9 @@ export class DB{
         }
     }
 
-    //private executeQuery(query:string, info?:Boolean){
-        executeQuery = (query:string, info?:Boolean) => {
+    private executeQuery(query:string, info?:Boolean){
+        //executeQuery = (query:string, info?:Boolean) => {
+        //console.log("QUERY: " + query)
         return new Promise((resolve, reject) => {
             let pool;
             if(info === true){
@@ -133,6 +134,7 @@ export class DB{
                 if(error){
                     return reject(error);
                 }
+                //console.log("RESULTS: " + results.length)
                 return resolve(results);
             });
         });

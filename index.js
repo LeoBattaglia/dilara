@@ -29,24 +29,6 @@ class DB {
     //Constructor
     constructor(host, user, password, schema) {
         this.reset = false;
-        //private executeQuery(query:string, info?:Boolean){
-        this.executeQuery = (query, info) => {
-            return new Promise((resolve, reject) => {
-                let pool;
-                if (info === true) {
-                    pool = this.pool_info;
-                }
-                else {
-                    pool = this.pool;
-                }
-                pool.query(query, (error, results) => {
-                    if (error) {
-                        return reject(error);
-                    }
-                    return resolve(results);
-                });
-            });
-        };
         this.host = host;
         this.user = user;
         this.password = password;
@@ -148,6 +130,27 @@ class DB {
             }
         });
     }
+    executeQuery(query, info) {
+        //executeQuery = (query:string, info?:Boolean) => {
+        //console.log("QUERY: " + query)
+        return new Promise((resolve, reject) => {
+            let pool;
+            if (info === true) {
+                pool = this.pool_info;
+            }
+            else {
+                pool = this.pool;
+            }
+            pool.query(query, (error, results) => {
+                if (error) {
+                    return reject(error);
+                }
+                //console.log("RESULTS: " + results.length)
+                return resolve(results);
+            });
+        });
+    }
+    ;
     getEmptyDeleteQuery(table) {
         return new db_mysql_1.MySQL_Delete(table);
     }
