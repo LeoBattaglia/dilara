@@ -64,7 +64,7 @@ class MySQL_InsertOrUpdate {
     }
     getQueryInsert() {
         if (this.values.length > 0) {
-            let query = "INSERT INTO " + "`" + this.table.name + "`";
+            let query = "INSERT INTO " + "`" + this.table + "`";
             query += " (";
             let value;
             let values_string = "(";
@@ -85,7 +85,7 @@ class MySQL_InsertOrUpdate {
     }
     getQueryUpdate() {
         if (this.values.length > 0) {
-            let query = "UPDATE " + "`" + this.table.name + "`";
+            let query = "UPDATE " + "`" + this.table + "`";
             query += " SET ";
             let value;
             for (let i = 0; i < this.values.length; i++) {

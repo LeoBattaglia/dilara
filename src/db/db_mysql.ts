@@ -57,12 +57,12 @@ export class MySQL_Drop{
 
 export class MySQL_InsertOrUpdate{
     //Declarations
-    table:DB_Table;
+    table:string;
     values:Array<Array<string>> = new Array<Array<string>>(0);
     wheres:Array<string> = new Array<string>(0);
 
     //Constructor
-    constructor(table:DB_Table){
+    constructor(table:string){
         this.table = table;
     }
 
@@ -80,7 +80,7 @@ export class MySQL_InsertOrUpdate{
 
     getQueryInsert():string{
         if(this.values.length > 0){
-            let query: string = "INSERT INTO " + "`" + this.table.name + "`";
+            let query: string = "INSERT INTO " + "`" + this.table + "`";
             query += " (";
             let value:string[];
             let values_string:string = "(";
@@ -102,7 +102,7 @@ export class MySQL_InsertOrUpdate{
 
     getQueryUpdate():string{
         if(this.values.length > 0){
-            let query: string = "UPDATE " + "`" + this.table.name + "`";
+            let query: string = "UPDATE " + "`" + this.table + "`";
             query += " SET ";
             let value:string[];
             for(let i:number=0; i<this.values.length; i++){
