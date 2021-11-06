@@ -144,7 +144,7 @@ export class DB{
         return new MySQL_Delete(table);
     }
 
-    getEmptyInsertOrUpdateQuery(table:DB_Table):MySQL_InsertOrUpdate{
+    getEmptyInsertOrUpdateQuery(table:string):MySQL_InsertOrUpdate{
         return new MySQL_InsertOrUpdate(table);
     }
 
