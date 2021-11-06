@@ -134,7 +134,7 @@ export class DB{
                 if(error){
                     return reject(error);
                 }
-                //console.log("RESULTS: " + results.length)
+                //console.log("RESULTS: " + typeof results.type)
                 return resolve(results);
             });
         });
@@ -172,6 +172,14 @@ export class DB{
         await this.connect();
         if(path !== undefined){
             await this.installDB(path);
+        }
+    }
+
+    async insertOrUpdate(query:MySQL_InsertOrUpdate, update:Boolean){
+        if(update){
+            return await this.executeQuery(query.getQueryUpdate());
+        }else{
+            return await this.executeQuery(query.getQueryInsert());
         }
     }
 

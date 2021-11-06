@@ -145,7 +145,7 @@ class DB {
                 if (error) {
                     return reject(error);
                 }
-                //console.log("RESULTS: " + results.length)
+                //console.log("RESULTS: " + typeof results.type)
                 return resolve(results);
             });
         });
@@ -177,6 +177,16 @@ class DB {
             yield this.connect();
             if (path !== undefined) {
                 yield this.installDB(path);
+            }
+        });
+    }
+    insertOrUpdate(query, update) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (update) {
+                return yield this.executeQuery(query.getQueryUpdate());
+            }
+            else {
+                return yield this.executeQuery(query.getQueryInsert());
             }
         });
     }
