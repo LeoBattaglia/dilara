@@ -138,6 +138,9 @@ class MySQL_Select {
         }
         return query;
     }
+    setOrder(order) {
+        this.order = order;
+    }
 }
 exports.MySQL_Select = MySQL_Select;
 //# sourceMappingURL=db_mysql.js.map

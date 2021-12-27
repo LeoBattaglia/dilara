@@ -159,4 +159,8 @@ export class MySQL_Select{
         }
         return query;
     }
+
+    setOrder(order:string):void{
+        this.order = order;
+    }
 }

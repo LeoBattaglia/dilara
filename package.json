@@ -1,6 +1,6 @@
 {
     "name": "dilara",
-    "version": "0.0.19",
+    "version": "0.1.0",
     "description": "Small MySQL-Middleware based on TypeScript",
     "main": "index.js",
     "scripts": {},
